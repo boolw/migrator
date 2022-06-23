@@ -183,12 +183,16 @@ func (t *Table) Primary(columns ...string) {
 
 // Unique adds unique key on selected columns
 func (t *Table) Unique(columns ...string) {
+	t.UniqueWithName(BuildUniqueKeyNameOnTable(t.Name, columns...), columns...)
+}
+
+func (t *Table) UniqueWithName(name string, columns ...string) {
 	if len(columns) == 0 {
 		return
 	}
 
 	t.indexes = append(t.indexes, Key{
-		Name:    BuildUniqueKeyNameOnTable(t.Name, columns...),
+		Name:    name,
 		Type:    "unique",
 		Columns: columns,
 	})
